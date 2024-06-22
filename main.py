@@ -31,6 +31,7 @@ class TicTacToeGame:
 
         # Connect the restart button to the restart_game method
         self.gui.restart_button.config(command=self.restart_game)
+        self.restart_game()  # Initialize the board here
 
     def button_click(self, row, col):
         """Handles button clicks on the game board."""
@@ -38,14 +39,18 @@ class TicTacToeGame:
         if self.game_board[row][col] == "" and not self.game_over:
             if self.current_player == self.player:
                 self.current_player.move(self.game_board, self.gui, row, col)  # Player move
-                self.current_player = self.computer  # Switch to computer
+                self.switch_player()  # Switch to computer
 
                 # Computer's turn immediately after player's move
                 if self.current_player == self.computer and not self.game_over:
                     self.computer.move(self.game_board, self.gui)  # Computer move
-                    self.current_player = self.player  # Switch back to player
+                    self.switch_player()  # Switch back to player
 
             self.check_for_winner()  # Call the function to check for a winner!
+            
+    def switch_player(self):
+        """Switches the current player."""
+        self.current_player = self.computer if self.current_player == self.player else self.player 
 
     def check_for_winner(self):
         """Checks for a winner or a draw."""
